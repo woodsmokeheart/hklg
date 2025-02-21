@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import "./App.css";
+import css from "./App.module.css";
 
 function App() {
   const circles = Array.from({ length: 6 });
@@ -49,97 +49,96 @@ function App() {
   }, [autoRotate]);
 
   return (
-    <div className="view">
-      <div className="neural-bg" />
-      <div className="neurons">
+    <div className={css.view}>
+      <div className={css.neuralBg} />
+      <div className={css.neurons}>
         {neurons.map((neuron) => (
-          <div key={neuron.id} className="neuron" style={neuron.style} />
+          <div key={neuron.id} className={css.neuron} style={neuron.style} />
         ))}
       </div>
       <div
-        className="plane main"
+        className={`${css.plane} ${css.planeMain}`}
         style={{
           transform: `rotateX(${rotation.x}deg) rotateY(${rotation.y}deg) rotateZ(${rotation.z}deg)`,
         }}
       >
         {circles.map((_, index) => (
-          <div key={index} className="circle" />
+          <div key={index} className={css.circle} />
         ))}
       </div>
 
-      {/* Кнопка открытия панели */}
       <button
-        className={`panel-toggle ${isPanelOpen ? "open" : ""}`}
+        className={`${css.panelToggle} ${
+          isPanelOpen ? css.panelToggleOpen : ""
+        }`}
         onClick={() => setIsPanelOpen(!isPanelOpen)}
       >
         {isPanelOpen ? "▼" : "▲"}
       </button>
 
-      {/* Панель управления */}
-      <div className={`control-panel ${isPanelOpen ? "open" : ""}`}>
-        <div className="controls-row">
-          {/* Управление по X */}
-          <div className="control-group">
+      <div
+        className={`${css.controlPanel} ${
+          isPanelOpen ? css.controlPanelOpen : ""
+        }`}
+      >
+        <div className={css.controlsRow}>
+          <div className={css.controlGroup}>
             <button
-              className="joystick-button"
+              className={css.joystickButton}
               onClick={() => handleRotation("x", -1)}
             >
               ↑
             </button>
             <button
-              className="joystick-button"
+              className={css.joystickButton}
               onClick={() => handleRotation("x", 1)}
             >
               ↓
             </button>
           </div>
 
-          {/* Управление по Y */}
-          <div className="control-group">
+          <div className={css.controlGroup}>
             <button
-              className="joystick-button"
+              className={css.joystickButton}
               onClick={() => handleRotation("y", -1)}
             >
               ←
             </button>
             <button
-              className="joystick-button"
+              className={css.joystickButton}
               onClick={() => handleRotation("y", 1)}
             >
               →
             </button>
           </div>
 
-          {/* Центральное управление */}
-          <div className="control-group">
+          <div className={css.controlGroup}>
             <button
-              className="joystick-button center-button"
+              className={`${css.joystickButton} ${css.centerButton}`}
               onClick={() => setAutoRotate(!autoRotate)}
             >
               {autoRotate ? "⏹" : "▶"}
             </button>
           </div>
 
-          {/* Управление по Z */}
-          <div className="control-group">
+          <div className={css.controlGroup}>
             <button
-              className="joystick-button z-button"
+              className={`${css.joystickButton} ${css.zButton}`}
               onClick={() => handleRotation("z", -1)}
             >
               ↺
             </button>
             <button
-              className="joystick-button z-button"
+              className={`${css.joystickButton} ${css.zButton}`}
               onClick={() => handleRotation("z", 1)}
             >
               ↻
             </button>
           </div>
 
-          {/* Кнопка сброса */}
-          <div className="control-group">
+          <div className={css.controlGroup}>
             <button
-              className="reset-button"
+              className={css.resetButton}
               onClick={() => setRotation({ x: 0, y: 0, z: 0 })}
             >
               Reset
