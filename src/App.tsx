@@ -1,14 +1,25 @@
 import { useState, useEffect } from "react";
 import css from "./App.module.css";
 
+interface Neuron {
+  id: number;
+  position: {
+    current: { x: number; y: number };
+    target: { x: number; y: number };
+  };
+  style: {
+    animationDelay: string;
+  };
+}
+
 function App() {
   const circles = Array.from({ length: 6 });
   const [rotation, setRotation] = useState({ x: 0, y: 0, z: 0 });
   const [autoRotate, setAutoRotate] = useState(true);
   const [isPanelOpen, setIsPanelOpen] = useState(false);
+  const [neurons, setNeurons] = useState<Neuron[]>([]);
   const rotationSpeed = 5;
 
-  // Функция для вращения по осям
   const handleRotation = (axis: "x" | "y" | "z", direction: 1 | -1) => {
     setRotation((prev) => ({
       ...prev,
@@ -16,17 +27,78 @@ function App() {
     }));
   };
 
-  // Генерация случайных нейронов
-  const neurons = Array.from({ length: 50 }).map((_, i) => ({
-    id: i,
-    style: {
-      left: `${Math.random() * 100}%`,
-      top: `${Math.random() * 100}%`,
-      animationDelay: `${Math.random() * 2}s`,
-    },
-  }));
+  // Инициализация нейронов
+  useEffect(() => {
+    const initialNeurons: Neuron[] = Array.from({ length: 50 }).map((_, i) => {
+      const x = Math.random() * 100;
+      const y = Math.random() * 100;
+      return {
+        id: i,
+        position: {
+          current: { x, y },
+          target: { x, y },
+        },
+        style: {
+          animationDelay: `${Math.random() * 2}s`,
+        },
+      };
+    });
+    setNeurons(initialNeurons);
+  }, []);
 
-  // Автоматическое вращение
+  // Обновление целевых позиций
+  useEffect(() => {
+    const updateTargetPositions = () => {
+      setNeurons((prevNeurons) =>
+        prevNeurons.map((neuron) => ({
+          ...neuron,
+          position: {
+            current: neuron.position.target,
+            target: {
+              x: Math.random() * 100,
+              y: Math.random() * 100,
+            },
+          },
+        }))
+      );
+    };
+
+    const intervalId = setInterval(updateTargetPositions, 2000);
+    return () => clearInterval(intervalId);
+  }, []);
+
+  // Анимация движения
+  useEffect(() => {
+    let animationFrameId: number;
+    const speed = 0.02; // Скорость движения (0-1)
+
+    const animate = () => {
+      setNeurons((prevNeurons) =>
+        prevNeurons.map((neuron) => {
+          const dx = neuron.position.target.x - neuron.position.current.x;
+          const dy = neuron.position.target.y - neuron.position.current.y;
+
+          return {
+            ...neuron,
+            position: {
+              ...neuron.position,
+              current: {
+                x: neuron.position.current.x + dx * speed,
+                y: neuron.position.current.y + dy * speed,
+              },
+            },
+          };
+        })
+      );
+
+      animationFrameId = requestAnimationFrame(animate);
+    };
+
+    animate();
+    return () => cancelAnimationFrame(animationFrameId);
+  }, []);
+
+  // Автоматическое вращение ТОЛЬКО для основного объекта
   useEffect(() => {
     let animationFrameId: number;
 
@@ -53,7 +125,15 @@ function App() {
       <div className={css.neuralBg} />
       <div className={css.neurons}>
         {neurons.map((neuron) => (
-          <div key={neuron.id} className={css.neuron} style={neuron.style} />
+          <div
+            key={neuron.id}
+            className={css.neuron}
+            style={{
+              ...neuron.style,
+              left: `${neuron.position.current.x}%`,
+              top: `${neuron.position.current.y}%`,
+            }}
+          />
         ))}
       </div>
       <div

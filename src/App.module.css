@@ -37,7 +37,7 @@
   background: linear-gradient(transparent 95%, rgba(0, 231, 255, 0.1) 95%),
     linear-gradient(90deg, transparent 95%, rgba(0, 231, 255, 0.1) 95%);
   background-size: 30px 30px;
-  animation: moveGrid 15s linear infinite;
+  animation: moveGrid 15s linear infinite; /* Постоянная анимация */
   opacity: 0.3;
   z-index: -1;
 }
@@ -61,6 +61,8 @@
   border-radius: 50%;
   box-shadow: 0 0 10px rgba(0, 231, 255, 0.8);
   animation: pulse 2s infinite ease-in-out;
+  will-change: transform, opacity, left, top;
+  pointer-events: none;
 }
 
 /* Основной объект */
