@@ -1,3 +1,11 @@
+.panelContainer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 999;
+  pointer-events: none;
+}
 /* Кнопка открытия панели */
 .panelToggle {
   position: fixed;
@@ -17,6 +25,10 @@
   align-items: center;
   justify-content: center;
   font-size: 18px;
+
+  pointer-events: auto;
+  outline: none !important;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .panelToggle:hover {
@@ -39,6 +51,9 @@
   backdrop-filter: blur(10px);
   transition: all 0.3s ease;
   z-index: 999;
+
+  pointer-events: auto;
+  outline: none !important;
 }
 
 .controlPanelOpen {
@@ -85,6 +100,29 @@
 
 .joystickButton:active {
   transform: scale(0.95);
+}
+
+.joystickButton,
+.resetButton {
+  outline: none !important;
+  -webkit-tap-highlight-color: transparent;
+  pointer-events: auto;
+  tabindex: -1;
+}
+
+/* Отключаем стандартные стили фокуса */
+.joystickButton:focus,
+.resetButton:focus,
+.panelToggle:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Убираем подсветку при фокусе */
+.joystickButton:focus-visible,
+.resetButton:focus-visible,
+.panelToggle:focus-visible {
+  outline: none !important;
 }
 
 /* Специальные кнопки */

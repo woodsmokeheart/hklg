@@ -31,12 +31,13 @@ export const ControlPanel = ({
   };
 
   return (
-    <div>
+    <div className={css.panelContainer}>
       <button
         className={`${css.panelToggle} ${
           isPanelOpen ? css.panelToggleOpen : ""
         }`}
         onClick={() => setIsPanelOpen(!isPanelOpen)}
+        tabIndex={0}
       >
         {isPanelOpen ? "▼" : "▲"}
       </button>
@@ -51,12 +52,14 @@ export const ControlPanel = ({
             <button
               className={css.joystickButton}
               onClick={() => handleRotation("x", -1)}
+              tabIndex={-1}
             >
               ↑
             </button>
             <button
               className={css.joystickButton}
               onClick={() => handleRotation("x", 1)}
+              tabIndex={-1}
             >
               ↓
             </button>
@@ -66,12 +69,14 @@ export const ControlPanel = ({
             <button
               className={css.joystickButton}
               onClick={() => handleRotation("y", -1)}
+              tabIndex={-1}
             >
               ←
             </button>
             <button
               className={css.joystickButton}
               onClick={() => handleRotation("y", 1)}
+              tabIndex={-1}
             >
               →
             </button>
@@ -81,6 +86,7 @@ export const ControlPanel = ({
             <button
               className={`${css.joystickButton} ${css.centerButton}`}
               onClick={() => setAutoRotate(!autoRotate)}
+              tabIndex={-1}
             >
               {autoRotate ? "⏹" : "▶"}
             </button>
@@ -90,12 +96,14 @@ export const ControlPanel = ({
             <button
               className={`${css.joystickButton} ${css.zButton}`}
               onClick={() => handleRotation("z", -1)}
+              tabIndex={-1}
             >
               ↺
             </button>
             <button
               className={`${css.joystickButton} ${css.zButton}`}
               onClick={() => handleRotation("z", 1)}
+              tabIndex={-1}
             >
               ↻
             </button>
@@ -105,6 +113,7 @@ export const ControlPanel = ({
             <button
               className={css.resetButton}
               onClick={() => setRotation({ x: 0, y: 0, z: 0 })}
+              tabIndex={-1}
             >
               Reset
             </button>
